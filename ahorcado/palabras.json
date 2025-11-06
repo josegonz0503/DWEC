@@ -1,0 +1,129 @@
+{
+  "tematicas": [
+    {
+      "tema": "películas",
+      "palabras": [
+        "inception",
+        "gladiator",
+        "titanic",
+        "avatar",
+        "interstellar",
+        "parasite",
+        "matrix",
+        "joker",
+        "frozen",
+        "coco",
+        "dune",
+        "oppenheimer",
+        "barbie",
+        "amelie",
+        "rocky",
+        "alien",
+        "terminator",
+        "avengers",
+        "spiderman",
+        "godzilla"
+      ]
+    },
+    {
+      "tema": "deportes",
+      "palabras": [
+        "futbol",
+        "baloncesto",
+        "natacion",
+        "ciclismo",
+        "tenis",
+        "voleibol",
+        "atletismo",
+        "boxeo",
+        "rugby",
+        "esgrima",
+        "surf",
+        "golf",
+        "hockey",
+        "patinaje",
+        "ajedrez",
+        "karate",
+        "escalada",
+        "remo",
+        "halterofilia",
+        "motocross"
+      ]
+    },
+    {
+      "tema": "países",
+      "palabras": [
+        "argentina",
+        "mexico",
+        "chile",
+        "brasil",
+        "peru",
+        "canada",
+        "españa",
+        "francia",
+        "italia",
+        "alemania",
+        "japon",
+        "china",
+        "india",
+        "australia",
+        "egipto",
+        "sudafrica",
+        "noruega",
+        "suecia",
+        "portugal",
+        "turquia"
+      ]
+    },
+    {
+      "tema": "animales",
+      "palabras": [
+        "leon",
+        "tigre",
+        "elefante",
+        "jirafa",
+        "cebra",
+        "hipopotamo",
+        "rinoceronte",
+        "canguro",
+        "panda",
+        "koala",
+        "lobo",
+        "zorro",
+        "oso",
+        "camaleon",
+        "pingüino",
+        "delfin",
+        "tiburon",
+        "ballena",
+        "aguila",
+        "serpiente"
+      ]
+    },
+    {
+      "tema": "ciencia",
+      "palabras": [
+        "quimica",
+        "fisica",
+        "biologia",
+        "astronomia",
+        "geologia",
+        "genetica",
+        "anatomia",
+        "ecologia",
+        "botanica",
+        "zoologia",
+        "neurociencia",
+        "microbiologia",
+        "termologia",
+        "optica",
+        "mecanica",
+        "electricidad",
+        "magnetismo",
+        "matematica",
+        "cosmologia",
+        "paleontologia"
+      ]
+    }
+  ]
+}

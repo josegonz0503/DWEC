@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Juego del Ahorcado</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- contenedor juego principal  -->
+
+  <div class="container">
+
+    <nav class="tematicas-lista">
+      <h2>Selecciona Temática</h2>
+      <ul>
+        <li class="tema" id="peliculas">Películas</li>
+        <li class="tema" id="deportes">Deportes</li>
+        <li class="tema" id="paises">Países</li>
+        <li class="tema" id="animales">Animales</li>
+        <li class="tema" id="ciencia">Ciencia</li>
+        <li class="tema" id="aleatorio">Tema aleatorio(oculto)</li>
+      </ul>
+    </nav>
+
+    <main class="juego-area">
+      <h1>Juego del Ahorcado</h1>
+<div id="contador">
+  <p id="cuentaAtras">⏳ Tiempo restante: 30s</p>
+  <p id="tiempoTranscurrido">🕒 Tiempo transcurrido: 0s</p>
+</div>
+
+      <p class="texto">Selecciona una letra, tienes <span id="intentos"></span> intentos</p>
+
+      <pre id="dibujo"></pre>
+
+      <h1>
+        Palabra: <span id="palabra"></span>
+      </h1>
+
+        <div class="letras">
+          <div class="fila">
+            <div class="letra">Q</div>
+            <div class="letra">W</div>
+            <div class="letra">E</div>
+            <div class="letra">R</div>
+            <div class="letra">T</div>
+            <div class="letra">Y</div>
+            <div class="letra">U</div>
+            <div class="letra">I</div>
+            <div class="letra">O</div>
+            <div class="letra">P</div>
+          </div>
+          <div class="fila">
+            <div class="letra">A</div>
+            <div class="letra">S</div>
+            <div class="letra">D</div>
+            <div class="letra">F</div>
+            <div class="letra">G</div>
+            <div class="letra">H</div>
+            <div class="letra">J</div>
+            <div class="letra">K</div>
+            <div class="letra">L</div>
+            <div class="letra">Ñ</div>
+          </div>
+          <div class="fila">
+            <div class="letra">Z</div>
+            <div class="letra">X</div>
+            <div class="letra">C</div>
+            <div class="letra">V</div>
+            <div class="letra">B</div>
+            <div class="letra">N</div>
+            <div class="letra">M</div>
+          </div>
+        </div>
+
+      <p id="mensaje"></p>
+
+      <button class="btn-jugar" onclick="location.reload()">Jugar de nuevo</button>
+    </main>
+
+  </div>
+
+
+  <!-- formulario inicio sesion -->
+
+  <p id="infoUsuario"></p>
+    <p style="display: none; font-size: 30px; color: black;">Complete el formulari</p>
+
+    <button style="display: none;">Fes clic!</button>
+
+    <div class="contenidorPopup" style="display: none;">
+        <div class="popup">
+            <span class="tanca-popup">✖</span>
+            <div class="contenedor">
+                <form id="form" class="form">
+                    <h2>Registra't amb nosaltres</h2>
+
+                    <div class="form-control">
+                        <label for="nomusuari">Nom d'usuari</label>
+                        <input type="text" id="nomusuari" placeholder="Introdueix el teu nom d'usuari">
+                        <small>Error message</small>
+                    </div>
+
+                    <div class="form-control">
+                        <label for="email">Correu electrònic</label>
+                        <input type="email" id="email" placeholder="Introdueix el teu correu electrònic">
+                        <small>Error message</small>
+                    </div>
+
+                    <div class="form-control">
+                        <label for="contrasenya">Contrasenya</label>
+                        <input type="password" id="contrasenya" placeholder="Introdueix la teva contrasenya">
+                        <small>Error message</small>
+                    </div>
+
+                    <div class="form-control">
+                        <label for="contrasenya2">Confirma la contrasenya</label>
+                        <input type="password" id="contrasenya2" placeholder="Confirma la teva contrasenya">
+                        <small>Error message</small>
+                    </div>
+
+                    <button type="submit">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+  <script src="script.js"></script>
+</body>
+
+</html>
