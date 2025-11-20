@@ -1,0 +1,47 @@
+
+
+// const parrafo = document.querySelector('body > h1');
+
+// console.log(parrafo);
+
+
+// const parrafos = document.querySelectorAll('p');
+
+// console.log(parrafos);
+
+// console.log(parrafos[1]);
+
+// parrafos.forEach(
+//     () => {
+//         console.log(parrafo);
+//     }
+// )
+
+
+
+
+// Por su id 
+
+// const tituloPagina = document.getElementById('titulo-pagina');
+
+// console.log(tituloPagina);
+
+
+
+// // Por su clase 
+
+// const errors = document.getElementsByClassName('error');
+
+
+// console.log(errors);
+
+// console.log(errors[1]);
+
+// Por su tag 
+
+const parrafos = document.getElementsByTagName('p');
+console.log(parrafos);
+
+for(let i = 0; i< parrafos.length; i++){
+    console.log(parrafos[i]);
+}

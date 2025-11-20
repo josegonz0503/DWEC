@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edición palabras</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="cabecera">
+            <h1>Edición de Palabras</h1>
+        </div>
+        <nav class="menu">
+            <a href="index.html">Inicio</a>
+            <a href="palabras-list.html">Listado de palabras</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="principal">
+            <div class="contenedor">
+                <form id="form-control">
+                    <div>
+                        <label for="palabra">Palabra:</label>
+                        <input type="text" id="palabra" name="texto" required>
+                    </div>
+                    <div>
+                        <label for="dificultad">Dificultad:</label>
+                        <select id="dificultad" name="dificultad" required>
+                            <option value="0">Seleccione la dificultad</option>
+                            <option value="1">Fácil</option>
+                            <option value="2">Media</option>
+                            <option value="3">Difícil</option>
+                            <option value="4">Muy difícil</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button type="submit">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

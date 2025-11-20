@@ -1,0 +1,19 @@
+{
+  "palabras": [
+    {
+      "id": "1",
+      "palabra": "Requete",
+      "dificultad": 4
+    },
+    {
+      "id": "2",
+      "palabra": "Pelota",
+      "dificultad": 1
+    },
+    {
+      "id": "3",
+      "palabra": "raqueta",
+      "dificultad": 4
+    }
+  ]
+}
