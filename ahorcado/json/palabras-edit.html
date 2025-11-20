@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar / Añadir Palabra</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>Editar / Añadir Palabra</h1>
+    <nav class="menu">
+        <a href="index.html">Inicio</a>
+        <a href="palabras-list.html">Listado</a>
+    </nav>
+</header>
+
+<main>
+    <form id="form-control">
+
+        <div>
+            <label for="palabra">Palabra:</label>
+            <input type="text" id="palabra" required>
+        </div>
+
+        <div>
+            <label for="categoria">Categoría:</label>
+            <select id="categoria" required>
+                <option value="peliculas">Películas</option>
+                <option value="deportes">Deportes</option>
+                <option value="paises">Países</option>
+                <option value="animales">Animales</option>
+                <option value="ciencia">Ciencia</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="dificultad">Dificultad:</label>
+            <select id="dificultad" required>
+                <option value="1">Fácil</option>
+                <option value="2">Media</option>
+                <option value="3">Difícil</option>
+            </select>
+        </div>
+
+        <button type="submit">Guardar</button>
+
+    </form>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

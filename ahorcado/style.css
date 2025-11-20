@@ -1,8 +1,11 @@
+/* ============================
+   ESTILO GENERAL
+============================ */
 body {
   display: flex;
-  justify-content: center; 
-  align-items: center;     
-  height: 100vh;           
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
   margin: 0;
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -17,290 +20,349 @@ h1 {
   margin-bottom: 10px;
 }
 
-.texto {
-  font-size: 1.2em;
-  margin-bottom: 20px;
-}
-
-#palabra {
-  font-weight: bold;
-  letter-spacing: 4px;
-  font-size: 1.5em;
-}
-
-.juego-inactivo {
-  pointer-events: none; /* Desactiva clicks y eventos de mouse */
-  opacity: 0.1; /* Opcional: para mostrar visualmente que está desactivado */
-  user-select: none; /* Evita selección de texto */
-  background-color: grey;
-}
-
-.tematicas-inactivas{
-
-pointer-events: none; /* Desactiva clicks y eventos de mouse */
-  opacity: 0.1; /* Opcional: para mostrar visualmente que está desactivado */
-  user-select: none; /* Evita selección de texto */
-  background-color: grey;
-
-}
-
-
-.letras {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-  margin: 30px auto;
-  max-width: 600px;
-}
-
-.fila {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-}
-
-.letra {
-  background: #ffffff;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  width: 45px;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 1.2em;
-  color: #333;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  user-select: none;
-}
-
-.letra.correcta {
-  background-color: #4CAF50;
-  color: white;
-  border-color: #4CAF50;
-}
-
-.letra.usada {
-  background-color: red;
-  border-color: #bbb;
-  cursor: not-allowed;
-}
-
-#mensaje {
-  margin-top: 20px;
-  font-size: 2em;
-
-}
-
-.ganado{
-  color: green;
-}
-
-.perdido{
-  color: red;
-}
-
-
-
-#dibujo {
-  margin: 20px 0;
-  min-height: 150px;
-}
-
-button{
-background-color: grey;      
-  color: white;                   
-  font-size: 18px;                
-  padding: 12px 24px;             
-  border: none;                   
-  border-radius: 8px;             
-  cursor: pointer;                
-}
-
-/* Container grid para layout dos columnas */
+/* ============================
+   CONTENEDOR PRINCIPAL
+============================ */
 .container {
   display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 30px;
-  max-width: 1000px;
-  margin: 0 auto;
+  grid-template-columns: 250px 1fr;
+  gap: 25px;
+  width: 75%;
   background: white;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   min-height: 600px;
+  margin-right: 350px;
 }
 
-/* Estilo para el nav (lista de temáticas) */
+/* ============================
+   TEMÁTICAS
+============================ */
 .tematicas-lista {
   background: #f0f4f8;
   padding: 20px;
   border-radius: 12px;
-  text-align: left;
   box-shadow: inset 0 0 10px #d1d9e6;
+  text-align: left;
 }
 
 .tematicas-lista h2 {
   font-size: 1.6em;
   margin-bottom: 15px;
   color: #334155;
-  user-select: none;
 }
 
 .tematicas-lista ul {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
 .tematicas-lista li.tema {
-  padding: 12px 16px;
-  margin-bottom: 8px;
+  margin-bottom: 20px;
+  padding: 12px;
+  background: #e2e8f0;
   border-radius: 8px;
-  background-color: #e2e8f0;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: bold;
   color: #1e293b;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition: 0.2s;
   user-select: none;
 }
 
 .tematicas-lista li.tema:hover {
-  background-color: #3b82f6;
+  background: #3b82f6;
   color: white;
 }
 
 .tematicas-lista li.tema.active {
-  background-color: #2563eb;
+  background: #2563eb;
   color: white;
-  font-weight: 700;
 }
 
-/* Área principal del juego */
-
-
-/* Ajustes para que texto quede centrado dentro del juego */
-.juego-area h1 {
-  margin-bottom: 10px;
-  color: #222;
+/* ============================
+   BARRA DE DIFICULTAD
+============================ */
+.dif-bar {
+  margin-top: 8px;
+  display: flex;
+  gap: 5px;
 }
 
-.juego-area .texto {
-  font-size: 1.2em;
-  margin-bottom: 20px;
-  color: #444;
+.dif {
+  padding: 5px 8px;
+  background: #cbd5e1;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85em;
+  border: 1px solid #94a3b8;
+  transition: 0.2s;
 }
 
+.dif:hover {
+  background: #3b82f6;
+  color: white;
+}
 
+.dif.active {
+  background: #1d4ed8;
+  color: white;
+}
+
+/* ============================
+   ÁREA DE JUEGO
+============================ */
+.juego-area {
+  text-align: center;
+}
+
+.juego-inactivo {
+  opacity: 0.3;
+  pointer-events: none;
+}
 
 #contador {
-  text-align: center;
-  font-size: 1.2em;
-  margin-bottom: 15px;
-  color: #222;
-  background: rgba(255, 255, 255, 0.8);
+  margin: 15px auto;
   padding: 10px;
-  border-radius: 8px;
   width: fit-content;
-  margin: 0 auto 15px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  background: #e2e8f0;
+  border-radius: 8px;
 }
 
-#contador p {
-  margin: 5px 0;
+.letras {
+  margin: 20px auto;
 }
 
-/* css formulario inicio de sesion ----------------------------------------------------- */
-
-.contenedor {
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-    padding: 40px;
+.fila {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 8px;
 }
 
-h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #333;
+.letra {
+  width: 45px;
+  height: 45px;
+  background: white;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-.form {
-    padding: 10px 0;
+.letra.correcta {
+  background: green;
+  color: white;
+}
+
+.letra.usada {
+  background: red;
+  color: white;
+}
+
+#mensaje {
+  margin-top: 15px;
+  font-size: 2em;
+}
+
+/* ============================
+   PANEL LATERAL
+============================ */
+.panel-lateral {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 300px;
+  height: 100vh;
+  background: #f1f5f9;
+  padding: 20px;
+  border-left: 3px solid #94a3b8;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: -3px 0 10px rgba(0,0,0,0.1);
+}
+
+/* Estado JSON */
+.estado-json {
+  padding: 10px;
+  text-align: center;
+  border-radius: 6px;
+  font-weight: bold;
+  color: white;
+}
+
+.json-ok {
+  background: #16a34a;
+}
+
+.json-fallback {
+  background: #dc2626;
+}
+
+/* Botón sesión */
+.btn-sesion {
+  padding: 12px;
+  background: #64748b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-sesion:hover {
+  background: #475569;
+}
+
+/* ============================
+   ESTADÍSTICAS
+============================ */
+.estadisticas {
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid #333;
+}
+
+.estadisticas table {
+  width: 100%;
+  font-size: 13px;
+}
+
+.estadisticas th {
+  background: #334155;
+  color: white;
+  padding: 5px;
+}
+
+.estadisticas td {
+  border: 1px solid #475569;
+  padding: 4px;
+}
+
+/* ============================
+   MENÚ JSON
+============================ */
+.menu-json {
+  background: #e2e8f0;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.menu-json a {
+  display: block;
+  padding: 8px;
+  background: #cbd5e1;
+  color: #1e293b;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.menu-json a:hover {
+  background: #94a3b8;
+  color: white;
+}
+
+/* ============================
+   POPUP REGISTRO
+============================ */
+.contenedorPopup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.5);
+}
+
+.popup {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
 }
 
 .form-control {
-    margin-bottom: 15px;
-    padding-bottom: 20px;
-    position: relative;
+  margin-bottom: 15px;
 }
 
-.form-control label {
-    color: #555;
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 600;
-}
-
-.form-control input {
-    border: 2px solid #f0f0f0;
-    border-radius: 4px;
-    display: block;
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    transition: border-color 0.3s ease;
-}
-
-.form-control input:focus {
-    outline: 0;
-    border-color: #777;
-}
-
-/* ✅ Quan el camp és correcte */
-.form-control.correcte input {
-    border-color: var(--correcte-color);
-}
-
-/* ✅ Quan hi ha un error */
-.form-control.error input {
-    border-color: var(--error-color);
-}
-
-/* Missatges d'error */
-.form-control small {
-    color: var(--error-color);
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    visibility: hidden;
-    font-size: 12px;
-}
-
-.form-control.error small {
-    visibility: visible;
-}
-
-/* Botó d’enviament */
 .form button {
-    cursor: pointer;
-    background-color: var(--boto);
-    border: 2px solid var(--boto);
-    border-radius: 4px;
-    color: white;
-    display: block;
-    font-size: 16px;
-    font-weight: 600;
-    padding: 10px;
-    width: 100%;
-    transition: background-color 0.3s ease;
+  background: #0ea5e9;
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
 }
 
-.form button:hover {
-    background-color: #2980b9;
+.form-control small {
+  color: red;
 }
+
+/* ============================
+   POPUP LOGOUT
+============================ */
+.popupLogout-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.55);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 5000;
+}
+
+.popupLogout-box {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+  animation: smoothPopup 0.25s ease-out;
+}
+
+.popupLogout-box h2 {
+  margin-top: 0;
+  color: #1e293b;
+}
+
+.popupLogout-btns {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.logout-yes {
+  background: #dc2626;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.logout-no {
+  background: #64748b;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.logout-yes:hover { background: #b91c1c; }
+.logout-no:hover { background: #475569; }
 

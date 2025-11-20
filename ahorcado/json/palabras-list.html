@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Palabras</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>Listado de Palabras</h1>
+    <nav class="menu">
+        <a href="index.html">Inicio</a>
+        <a href="palabras-edit.html">Añadir palabra</a>
+    </nav>
+</header>
+
+<main>
+    <div class="tabla-container">
+        <table class="tabla-palabras">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Palabra</th>
+                    <th>Categoría</th>
+                    <th>Dificultad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="listado-palabras">
+                <tr><td colspan="5">Cargando...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

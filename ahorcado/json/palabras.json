@@ -1,0 +1,172 @@
+{
+  "palabras": [
+    {
+      "id": "1",
+      "categoria": "peliculas",
+      "palabra": "inception",
+      "dificultad": 2
+    },
+    {
+      "id": "2",
+      "categoria": "peliculas",
+      "palabra": "gladiator",
+      "dificultad": 2
+    },
+    {
+      "id": "3",
+      "categoria": "peliculas",
+      "palabra": "titanic",
+      "dificultad": 1
+    },
+    {
+      "id": "4",
+      "categoria": "peliculas",
+      "palabra": "avatar",
+      "dificultad": 1
+    },
+    {
+      "id": "5",
+      "categoria": "peliculas",
+      "palabra": "interstellar",
+      "dificultad": 3
+    },
+    {
+      "id": "6",
+      "categoria": "peliculas",
+      "palabra": "matrix",
+      "dificultad": 2
+    },
+    {
+      "id": "7",
+      "categoria": "deportes",
+      "palabra": "futbol",
+      "dificultad": 1
+    },
+    {
+      "id": "8",
+      "categoria": "deportes",
+      "palabra": "tenis",
+      "dificultad": 1
+    },
+    {
+      "id": "9",
+      "categoria": "deportes",
+      "palabra": "rugby",
+      "dificultad": 2
+    },
+    {
+      "id": "10",
+      "categoria": "deportes",
+      "palabra": "golf",
+      "dificultad": 1
+    },
+    {
+      "id": "11",
+      "categoria": "deportes",
+      "palabra": "natacion",
+      "dificultad": 2
+    },
+    {
+      "id": "12",
+      "categoria": "paises",
+      "palabra": "mexico",
+      "dificultad": 1
+    },
+    {
+      "id": "13",
+      "categoria": "paises",
+      "palabra": "chile",
+      "dificultad": 1
+    },
+    {
+      "id": "14",
+      "categoria": "paises",
+      "palabra": "brasil",
+      "dificultad": 1
+    },
+    {
+      "id": "15",
+      "categoria": "paises",
+      "palabra": "canada",
+      "dificultad": 1
+    },
+    {
+      "id": "16",
+      "categoria": "paises",
+      "palabra": "españa",
+      "dificultad": 2
+    },
+    {
+      "id": "17",
+      "categoria": "animales",
+      "palabra": "leon",
+      "dificultad": 1
+    },
+    {
+      "id": "18",
+      "categoria": "animales",
+      "palabra": "tigre",
+      "dificultad": 2
+    },
+    {
+      "id": "19",
+      "categoria": "animales",
+      "palabra": "elefante",
+      "dificultad": 3
+    },
+    {
+      "id": "20",
+      "categoria": "animales",
+      "palabra": "jirafa",
+      "dificultad": 2
+    },
+    {
+      "id": "21",
+      "categoria": "animales",
+      "palabra": "panda",
+      "dificultad": 1
+    },
+    {
+      "id": "22",
+      "categoria": "ciencia",
+      "palabra": "fisica",
+      "dificultad": 2
+    },
+    {
+      "id": "23",
+      "categoria": "ciencia",
+      "palabra": "quimica",
+      "dificultad": 2
+    },
+    {
+      "id": "24",
+      "categoria": "ciencia",
+      "palabra": "biologia",
+      "dificultad": 3
+    },
+    {
+      "id": "25",
+      "categoria": "ciencia",
+      "palabra": "optica",
+      "dificultad": 2
+    },
+    {
+      "id": "26",
+      "categoria": "ciencia",
+      "palabra": "genetica",
+      "dificultad": 3
+    },
+    {
+      "id": "27",
+      "palabra": "pato",
+      "categoria": "animales",
+      "dificultad": 1
+    },
+    {
+      "id": "271",
+      "palabra": "uruguay",
+      "categoria": "paises",
+      "dificultad": 3
+    }
+  ]
+}

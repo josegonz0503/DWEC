@@ -1,13 +1,30 @@
-// === CONTADOR ===
+/* ============================== REGISTRO / SESIÓN ============================== */
+
+const popupRegistro = document.getElementById("popupRegistro");
+const popupLogout = document.getElementById("popupLogout");
+const tematicasLista = document.querySelector(".tematicas-lista");
+const contenedor = document.getElementsByClassName("contenedor")[0];
+const estadoJSON = document.getElementById("estadoJSON");
+
+if (!localStorage.getItem("usuarioAhorcado")) {
+  popupRegistro.style.display = "flex";
+  tematicasLista.style.pointerEvents = "none";
+  tematicasLista.style.opacity = "0.4";
+} else {
+  contenedor.style.display = "none";
+}
+
+/* ============================== CONTADOR ============================== */
+
 const cuentaAtras = document.getElementById("cuentaAtras");
 const tiempoTranscurrido = document.getElementById("tiempoTranscurrido");
-let cuentaAtrasValor = 30; // segundos para adivinar
+
+let cuentaAtrasValor = 30;
 let tiempoTranscurridoValor = 0;
-let cuentaAtrasInterval;
-let tiempoTranscurridoInterval;
+let cuentaAtrasInterval = null;
+let tiempoTranscurridoInterval = null;
 
-
-function iniciarContador(finalJocCallback) {
+function iniciarContador() {
   clearInterval(cuentaAtrasInterval);
   clearInterval(tiempoTranscurridoInterval);
 
@@ -20,10 +37,12 @@ function iniciarContador(finalJocCallback) {
   cuentaAtrasInterval = setInterval(() => {
     cuentaAtrasValor--;
     cuentaAtras.textContent = `⏳ Tiempo restante: ${cuentaAtrasValor}s`;
+
     if (cuentaAtrasValor <= 0) {
-      clearInterval(cuentaAtrasInterval);
-      clearInterval(tiempoTranscurridoInterval);
-      finalJocCallback(false, "¡Se acabó el tiempo!");
+      detenerContador();
+      if (typeof tiempoAgotadoCallback === "function") {
+        tiempoAgotadoCallback();
+      }
     }
   }, 1000);
 
@@ -38,19 +57,50 @@ function detenerContador() {
   clearInterval(tiempoTranscurridoInterval);
 }
 
-// === JUEGO DEL AHORCADO ===
+/* ============================== JSON + FALLBACK ============================== */
 
-// Listas de palabras por temática
-const peliculas = ["inception", "gladiator", "titanic", "avatar", "interstellar", "parasite", "matrix", "joker", "frozen", "coco", "dune", "oppenheimer", "barbie", "amelie", "rocky", "alien", "terminator", "avengers", "spiderman", "godzilla"];
-const deportes = ["futbol", "baloncesto", "natacion", "ciclismo", "tenis", "voleibol", "atletismo", "boxeo", "rugby", "esgrima", "surf", "golf", "hockey", "patinaje", "ajedrez", "karate", "escalada", "remo", "halterofilia", "motocross"];
-const paises = ["argentina", "mexico", "chile", "brasil", "peru", "canada", "españa", "francia", "italia", "alemania", "japon", "china", "india", "australia", "egipto", "sudafrica", "noruega", "suecia", "portugal", "turquia"];
-const animales = ["leon", "tigre", "elefante", "jirafa", "cebra", "hipopotamo", "rinoceronte", "canguro", "panda", "koala", "lobo", "zorro", "oso", "camaleon", "pingüino", "delfin", "tiburon", "ballena", "aguila", "serpiente"];
-const ciencia = ["quimica", "fisica", "biologia", "astronomia", "geologia", "genetica", "anatomia", "ecologia", "botanica", "zoologia", "neurociencia", "microbiologia", "termologia", "optica", "mecanica", "electricidad", "magnetismo", "matematica", "cosmologia", "paleontologia"];
+const fallbackCategorias = {
+  peliculas: ["inception","gladiator","titanic","avatar","interstellar","matrix"],
+  deportes: ["futbol","tenis","rugby","golf","natacion"],
+  paises: ["mexico","chile","brasil","canada","españa"],
+  animales: ["leon","tigre","elefante","jirafa","panda"],
+  ciencia: ["fisica","quimica","biologia","optica","genetica"]
+};
 
-const arrays = [peliculas, deportes, paises, animales, ciencia];
-const aleatorio = arrays[Math.floor(Math.random() * arrays.length)];
+let categoriasMap = {};
+let palabrasJSON = [];
+let jsonCargadoCorrectamente = false;
 
-const temas = document.querySelectorAll('.tematicas-lista li.tema');
+fetch("json/palabras.json")
+  .then(r => r.json())
+  .then(data => {
+    palabrasJSON = data.palabras;
+
+    categoriasMap = data.palabras.reduce((acc, item) => {
+      if (!acc[item.categoria]) acc[item.categoria] = [];
+      acc[item.categoria].push(item.palabra.toLowerCase());
+      return acc;
+    }, {});
+
+    jsonCargadoCorrectamente = true;
+    estadoJSON.textContent = "JSON cargado correctamente";
+    estadoJSON.className = "estado-json json-ok";
+  })
+  .catch(err => {
+    categoriasMap = fallbackCategorias;
+    jsonCargadoCorrectamente = false;
+    estadoJSON.textContent = "Usando fallback (JSON no disponible)";
+    estadoJSON.className = "estado-json json-fallback";
+  });
+
+function dataPalabrasFiltradas(categoria, dificultad) {
+  return palabrasJSON
+    .filter(p => p.categoria === categoria && p.dificultad === dificultad)
+    .map(p => p.palabra.toLowerCase());
+}
+
+/* ============================== JUEGO ============================== */
+
 const areaJuego = document.querySelector(".juego-area");
 const letrasContenedor = document.querySelector(".letras");
 const palabra = document.getElementById("palabra");
@@ -58,81 +108,80 @@ const intentos = document.getElementById("intentos");
 const mensaje = document.getElementById("mensaje");
 const dibujo = document.getElementById("dibujo");
 
+let tiempoAgotadoCallback = null;
 
-// Iniciar con teclado inactivo
 areaJuego.classList.add("juego-inactivo");
 
-// Fondo aleatorio
-const colores = [
-  '#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF',
-  '#E0BBE4', '#957DAD', '#D5AAFF', '#A0CED9', '#B5EAD7',
-  '#C7CEEA', '#F3B0C3', '#F6E2B3', '#B3F3EC', '#B3D1F3',
-  '#F3C1B3', '#D1F3B3', '#F3B3E6', '#B3F3F3', '#E3F3B3'
-];
-document.body.style.backgroundColor = colores[Math.floor(Math.random() * colores.length)];
+/* ============================== DIFICULTAD ============================== */
 
-let palabras = [];
+document.querySelectorAll(".dif").forEach(btn => {
+  btn.addEventListener("click", () => {
 
-temas.forEach(tema => {
-  tema.addEventListener('click', () => {
-    temas.forEach(t => t.classList.remove('active'));
-    tema.classList.add('active');
+    btn.parentElement.querySelectorAll(".dif")
+      .forEach(d => d.classList.remove("active"));
+    btn.classList.add("active");
 
-    const temaSeleccionado = tema.getAttribute('id');
-    switch (temaSeleccionado) {
-      case "peliculas": palabras = peliculas; break;
-      case "deportes": palabras = deportes; break;
-      case "paises": palabras = paises; break;
-      case "animales": palabras = animales; break;
-      case "ciencia": palabras = ciencia; break;
-      case "aleatorio": palabras = aleatorio; break;
-      default: palabras = ["rojo", "verde"];
+    const dificultad = parseInt(btn.dataset.dif);
+    const categoria = btn.closest(".tema").id;
+
+    let base = categoriasMap[categoria] || fallbackCategorias[categoria] || [];
+    let filtradas = base;
+
+    if (jsonCargadoCorrectamente) {
+      filtradas = dataPalabrasFiltradas(categoria, dificultad);
     }
 
-    areaJuego.classList.remove('juego-inactivo');
-    document.getElementsByTagName("nav")[0].classList.add("tematicas-inactivas");
+    if (filtradas.length === 0) {
+      alert("No hay palabras disponibles para esa dificultad.");
+      return;
+    }
 
-    jugar(palabras);
+    areaJuego.classList.remove("juego-inactivo");
+    jugar(filtradas);
+
+    tematicasLista.style.pointerEvents = "none";
+    tematicasLista.style.opacity = "0.4";
   });
 });
 
-function jugar(palabras) {
-  const palabraRandom = palabras[Math.floor(Math.random() * palabras.length)];
-  const letras = palabraRandom.split('');
-  const guiones = Array(letras.length).fill('_');
+/* ============================== LÓGICA DEL JUEGO ============================== */
 
-  palabra.innerText = guiones.join(' ');
+function jugar(listaPalabras) {
+
+  const palabraRandom = listaPalabras[Math.floor(Math.random()*listaPalabras.length)];
+
+  const letras = palabraRandom.split("");
+  const guiones = Array(letras.length).fill("_");
+
+  palabra.innerText = guiones.join(" ");
   mensaje.innerText = "";
-  mensaje.classList.remove("ganado", "perdido");
 
-  letrasContenedor.classList.remove('teclado-inactivo');
-  [...letrasContenedor.children].forEach(boton => {
-    boton.disabled = false;
-    boton.classList.remove("correcta", "usada");
+  [...letrasContenedor.children].forEach(b => {
+    b.disabled = false;
+    b.classList.remove("correcta","usada");
   });
 
-  let falladas = [];
-  let adivinado = false;
   let maxIntentos = 6;
-  intentos.innerText = maxIntentos;
+  intentos.textContent = maxIntentos;
 
   const dibujos = [
-    `   -----\n  |     |\n        |\n        |\n        |\n________|`,
-    `   -----\n  |     |\n  O     |\n        |\n        |\n________|`,
-    `   -----\n  |     |\n  O     |\n /      |\n        |\n________|`,
-    `   -----\n  |     |\n  O     |\n / \\    |\n        |\n________|`,
-    `   -----\n  |     |\n  O     |\n /|\\    |\n        |\n________|`,
-    `   -----\n  |     |\n  O     |\n /|\\    |\n /      |\n________|`,
-    `   -----\n  |     |\n  O     |\n /|\\    |\n / \\    |\n________|`
+    "-----\n|   |\n    |\n    |\n    |\n_____",
+    "-----\n|   |\nO   |\n    |\n    |\n_____",
+    "-----\n|   |\nO   |\n|   |\n    |\n_____",
+    "-----\n|   |\nO   |\n/|  |\n    |\n_____",
+    "-----\n|   |\nO   |\n/|\\ |\n    |\n_____",
+    "-----\n|   |\nO   |\n/|\\ |\n/   |\n_____",
+    "-----\n|   |\nO   |\n/|\\ |\n/ \\ |\n_____"
   ];
 
-  dibujo.innerText = dibujos[0];
+  dibujo.textContent = dibujos[0];
 
-  // Iniciar el contador al comenzar la partida
-  iniciarContador(finalizarJuego);
+  tiempoAgotadoCallback = () =>
+    finalizarJuego(false, `⏳ Tiempo agotado. La palabra era: ${palabraRandom}`, palabraRandom, 0);
 
-  letrasContenedor.onclick = function (e) {
-    if (adivinado) return;
+  iniciarContador();
+
+  letrasContenedor.onclick = e => {
     if (!e.target.classList.contains("letra") || e.target.disabled) return;
 
     const letra = e.target.innerText.toLowerCase();
@@ -140,144 +189,163 @@ function jugar(palabras) {
 
     if (letras.includes(letra)) {
       e.target.classList.add("correcta");
-      letras.forEach((l, i) => {
+
+      letras.forEach((l,i) => {
         if (l === letra) guiones[i] = letra;
       });
 
-      palabra.innerText = guiones.join(' ');
+      palabra.innerText = guiones.join(" ");
 
-      if (!guiones.includes('_')) {
-        adivinado = true;
-        finalizarJuego(true, "¡Felicidades! Has acertado la palabra.");
+      if (!guiones.includes("_")) {
+        finalizarJuego(true, "🎉 ¡Has ganado!", palabraRandom, maxIntentos);
       }
+
     } else {
       e.target.classList.add("usada");
-      falladas.push(letra);
       maxIntentos--;
-      intentos.innerText = maxIntentos;
-      dibujo.innerText = dibujos[6 - maxIntentos];
+      intentos.textContent = maxIntentos;
+      dibujo.textContent = dibujos[6 - maxIntentos];
 
       if (maxIntentos === 0) {
-        adivinado = true;
-        finalizarJuego(false, `¡Lo siento! La palabra era: ${palabraRandom}`);
+        finalizarJuego(false, `💀 La palabra era: ${palabraRandom}`, palabraRandom, maxIntentos);
       }
     }
   };
 
-  function finalizarJuego(ganado, texto) {
+  function finalizarJuego(ganado, texto, palabraRandom, intentosRestantes) {
     detenerContador();
+
     mensaje.innerText = texto;
-    mensaje.classList.add(ganado ? "ganado" : "perdido");
-    letrasContenedor.classList.add('teclado-inactivo');
-    [...letrasContenedor.children].forEach(boton => boton.disabled = true);
+    [...letrasContenedor.children].forEach(b => b.disabled = true);
+    letrasContenedor.style.pointerEvents = "none";
+
+    if (ganado) {
+      const errores = 6 - intentosRestantes;
+      const tiempoUsado = tiempoTranscurridoValor;
+      guardarResultado(palabraRandom, errores, tiempoUsado);
+    }
   }
 }
 
-// script formulario inicio de sesion --------------------------------------------------------------------------------------------------------
+/* ============================== FORMULARIO LOGIN ============================== */
 
-// Capturar elementos del formulario
-const form = document.getElementById('form');
-const nomusuari = document.getElementById('nomusuari');
-const email = document.getElementById('email');
-const contrasenya = document.getElementById('contrasenya');
-const contrasenya2 = document.getElementById('contrasenya2');
+const form = document.getElementById("form");
+const nomusuari = document.getElementById("nomusuari");
+const email = document.getElementById("email");
+const contrasenya = document.getElementById("contrasenya");
+const contrasenya2 = document.getElementById("contrasenya2");
 
-// Funciones para mostrar errores y correctos
-function muestraError(input, mensaje) {
-  const formControl = input.parentElement;
-  formControl.classList.remove('correcte');
-  formControl.classList.add('error');
-  const label = formControl.querySelector('label');
-  const small = formControl.querySelector('small');
-  small.innerText = `${label.innerText}: ${mensaje}`;
+function error(input, msg) {
+  input.parentElement.classList.add("error");
+  input.parentElement.querySelector("small").innerText = msg;
 }
 
-function muestraCorrecto(input) {
-  const formControl = input.parentElement;
-  formControl.classList.remove('error');
-  formControl.classList.add('correcte'); // 🔹 usa "correcte"
-  const small = formControl.querySelector('small');
-  small.innerText = '';
+function correcto(input) {
+  input.parentElement.classList.remove("error");
+  input.parentElement.querySelector("small").innerText = "";
 }
 
+function validar() {
+  let ok = true;
 
-// Validar email con expresión regular
-function esEmailValido(input) {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (re.test(String(input.value).toLowerCase())) {
-        muestraCorrecto(input);
-        return true;
-    } else {
-        muestraError(input, 'no es válido');
-        return false;
-    }
+  if (nomusuari.value.trim() === "") { error(nomusuari, "Requerido"); ok = false; }
+  else correcto(nomusuari);
+
+  if (email.value.trim() === "") { error(email, "Requerido"); ok = false; }
+  else correcto(email);
+
+  if (contrasenya.value.trim().length < 6) { error(contrasenya, "Mínimo 6 caracteres"); ok = false; }
+  else correcto(contrasenya);
+
+  if (contrasenya2.value !== contrasenya.value) { error(contrasenya2, "No coinciden"); ok = false; }
+  else correcto(contrasenya2);
+
+  return ok;
 }
 
-// Función para comprobar campos obligatorios
-function esObligatorio(inputArr) {
-    let valido = true;
-    inputArr.forEach(function(input) {
-        if (input.value.trim() === '') {
-            muestraError(input, 'es obligatorio');
-            valido = false;
-        } else {
-            muestraCorrecto(input);
-        }
-    });
-    return valido;
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  if (validar()) {
+    localStorage.setItem("usuarioAhorcado", nomusuari.value);
+    contenedor.style.display = "none";
+    popupRegistro.style.display = "none";
+    tematicasLista.style.pointerEvents = "auto";
+    tematicasLista.style.opacity = "1";
+  }
+});
+
+/* ============================== ESTADÍSTICAS ============================== */
+
+function guardarResultado(palabra, errores, tiempo) {
+  let registros = JSON.parse(localStorage.getItem("resultadosAhorcado")) || {};
+
+  if (!registros[palabra]) {
+    registros[palabra] = {
+      mejorTiempo: { tiempo, errores },
+      menorErrores: { errores, tiempo }
+    };
+  } else {
+    let r = registros[palabra];
+    if (tiempo < r.mejorTiempo.tiempo) r.mejorTiempo = { tiempo, errores };
+    if (errores < r.menorErrores.errores) r.menorErrores = { errores, tiempo };
+  }
+
+  localStorage.setItem("resultadosAhorcado", JSON.stringify(registros));
+  mostrarEstadisticas();
 }
 
-// ✅ Nueva función para comprobar la longitud de varios elementos
-function compruebaLongitud(inputsArr) {
-    let todoCorrecto = true;
+function mostrarEstadisticas() {
+  let registros = JSON.parse(localStorage.getItem("resultadosAhorcado")) || {};
+  let tabla = document.getElementById("tablaStats");
 
-    inputsArr.forEach(({ input, min, max }) => {
-        if (input.value.length < min) {
-            muestraError(input, `debe tener al menos ${min} caracteres`);
-            todoCorrecto = false;
-        } else if (input.value.length > max) {
-            muestraError(input, `debe tener menos de ${max} caracteres`);
-            todoCorrecto = false;
-        } else {
-            muestraCorrecto(input);
-        }
-    });
+  tabla.innerHTML = "";
 
-    return todoCorrecto;
+  for (let pal in registros) {
+    let r = registros[pal];
+    let fila = document.createElement("tr");
+    fila.innerHTML = `
+      <td>${pal}</td>
+      <td>${r.mejorTiempo.tiempo}</td>
+      <td>${r.mejorTiempo.errores}</td>
+      <td>${r.menorErrores.errores}</td>
+      <td>${r.menorErrores.tiempo}</td>
+    `;
+    tabla.appendChild(fila);
+  }
 }
 
-// Función para comprobar que las contraseñas coinciden
-function compruebaContrasenas(input1, input2) {
-    if (input1.value !== input2.value) {
-        muestraError(input2, 'no coincide');
-        return false;
-    } else {
-        muestraCorrecto(input2);
-        return true;
-    }
-}
+mostrarEstadisticas();
 
-// Evento del formulario
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
+/* ============================== BOTÓN SESIÓN ============================== */
 
-    // Comprobar campos obligatorios
-    const obligatorioOK = esObligatorio([nomusuari, email, contrasenya, contrasenya2]);
+const btnSesion = document.getElementById("btnSesion");
 
-    // Si los campos obligatorios están completos, validar el resto
-    if (obligatorioOK) {
-        const emailOK = esEmailValido(email);
+btnSesion.addEventListener("click", () => {
 
-        const longitudesOK = compruebaLongitud([
-            { input: nomusuari, min: 3, max: 15 },
-            { input: contrasenya, min: 6, max: 25 }
-        ]);
-        const contrasenasCoinciden = compruebaContrasenas(contrasenya, contrasenya2);
+  const usuario = localStorage.getItem("usuarioAhorcado");
 
-        if (emailOK && longitudesOK && contrasenasCoinciden) {
-            console.log(' ¡Formulario válido!');
-        } else {
-            console.log('⚠️ Hay errores en el formulario.');
-        }
-    }
+  if (!usuario) {
+    popupRegistro.style.display = "flex";
+    contenedor.style.display = "flex";
+    return;
+  }
+
+  popupLogout.style.display = "flex";
+});
+
+// BOTONES DEL POPUP LOGOUT
+
+document.getElementById("logoutSi").addEventListener("click", () => {
+  localStorage.removeItem("usuarioAhorcado");
+
+  popupRegistro.style.display = "flex";
+  contenedor.style.display = "flex";
+  tematicasLista.style.pointerEvents = "none";
+  tematicasLista.style.opacity = "0.4";
+
+  popupLogout.style.display = "none";
+});
+
+document.getElementById("logoutNo").addEventListener("click", () => {
+  popupLogout.style.display = "none";
 });
